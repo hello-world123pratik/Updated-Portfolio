@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pratik Shirsath — Full Stack Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:      #08080e;
+    --bg2:     #0f0f18;
+    --bg3:     #14141f;
+    --card:    #111119;
+    --card2:   #18181f;
+    --border:  rgba(255,255,255,0.06);
+    --border2: rgba(255,255,255,0.11);
+    --text:    #eeedf8;
+    --text2:   #9896b2;
+    --text3:   #55536e;
+    --purple:  #7c6dfa;
+    --purple2: #a593fc;
+    --cyan:    #22d3ee;
+    --green:   #34d399;
+    --amber:   #fbbf24;
+    --r:       12px;
+    --r2:      18px;
+    --ease:    0.22s cubic-bezier(0.4,0,0.2,1);
+  }
+  [data-light] {
+    --bg:      #f9f8ff;
+    --bg2:     #f1f0fa;
+    --bg3:     #e9e8f5;
+    --card:    #ffffff;
+    --card2:   #f4f3fc;
+    --border:  rgba(0,0,0,0.06);
+    --border2: rgba(0,0,0,0.11);
+    --text:    #0c0b1a;
+    --text2:   #48466a;
+    --text3:   #8886a8;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+    font-size: 16px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.9rem 2.5rem;
+    background: rgba(8,8,14,0.75);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-light] nav { background: rgba(249,248,255,0.82); }
+  .logo {
+    font-weight: 800; font-size: 1.05rem; color: var(--text);
+    text-decoration: none; letter-spacing: -0.02em;
+  }
+  .logo em { color: var(--purple2); font-style: normal; }
+  .nav-links { display: flex; gap: 1.8rem; list-style: none; }
+  .nav-links a {
+    color: var(--text2); text-decoration: none; font-size: 0.88rem;
+    font-weight: 400; transition: color var(--ease);
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-right { display: flex; align-items: center; gap: 0.8rem; }
+  .toggle-btn {
+    background: var(--card); border: 1px solid var(--border2);
+    border-radius: 40px; padding: 0.35rem 0.85rem;
+    cursor: pointer; font-size: 0.78rem; color: var(--text2);
+    font-family: 'Outfit', sans-serif; transition: var(--ease);
+  }
+  .toggle-btn:hover { color: var(--text); border-color: var(--purple); }
+  .hire-btn {
+    background: var(--purple); color: #fff; border: none;
+    border-radius: 8px; padding: 0.45rem 1.1rem;
+    font-size: 0.84rem; font-weight: 500; cursor: pointer;
+    text-decoration: none; font-family: 'Outfit', sans-serif;
+    transition: opacity var(--ease);
+  }
+  .hire-btn:hover { opacity: 0.82; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center;
+    justify-content: center; padding: 8rem 2rem 5rem;
+    position: relative; overflow: hidden; text-align: center;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .hero-glow {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 700px; height: 360px;
+    background: radial-gradient(ellipse at center top, rgba(124,109,250,0.13) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 800px; }
+  .status-pill {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    background: var(--card); border: 1px solid var(--border2);
+    border-radius: 40px; padding: 0.35rem 1rem;
+    font-size: 0.78rem; color: var(--text2); margin-bottom: 2rem;
+    animation: rise 0.5s ease both;
+  }
+  .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--green); flex-shrink: 0;
+    animation: blink 2.2s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.35} }
+  @keyframes rise  { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+
+  .hero h1 {
+    font-size: clamp(2.6rem, 5.5vw, 4.6rem);
+    font-weight: 800; letter-spacing: -0.04em; line-height: 1.06;
+    margin-bottom: 1.4rem;
+    animation: rise 0.5s 0.08s ease both;
+  }
+  .grad {
+    background: linear-gradient(130deg, var(--purple2) 0%, var(--cyan) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-desc {
+    font-size: 1.05rem; color: var(--text2); font-weight: 300;
+    max-width: 520px; margin: 0 auto 2.4rem; line-height: 1.75;
+    animation: rise 0.5s 0.15s ease both;
+  }
+  .hero-btns {
+    display: flex; gap: 0.9rem; justify-content: center;
+    flex-wrap: wrap; animation: rise 0.5s 0.22s ease both;
+  }
+  .btn-fill {
+    background: var(--purple); color: #fff; border: none;
+    border-radius: 9px; padding: 0.75rem 1.9rem; font-size: 0.92rem;
+    font-weight: 500; cursor: pointer; text-decoration: none;
+    font-family: 'Outfit', sans-serif;
+    transition: transform var(--ease), box-shadow var(--ease);
+  }
+  .btn-fill:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(124,109,250,0.38); }
+  .btn-ghost {
+    background: transparent; color: var(--text);
+    border: 1px solid var(--border2); border-radius: 9px;
+    padding: 0.75rem 1.9rem; font-size: 0.92rem; font-weight: 400;
+    cursor: pointer; text-decoration: none; font-family: 'Outfit', sans-serif;
+    transition: border-color var(--ease), background var(--ease);
+  }
+  .btn-ghost:hover { border-color: var(--purple2); background: rgba(165,147,252,0.06); }
+
+  .stats-row {
+    display: flex; gap: 2.5rem; justify-content: center;
+    margin-top: 4rem; padding-top: 3rem;
+    border-top: 1px solid var(--border);
+    animation: rise 0.5s 0.3s ease both;
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-n { font-size: 1.7rem; font-weight: 800; color: var(--text); }
+  .stat-n sup { font-size: 1rem; color: var(--purple2); }
+  .stat-l { font-size: 0.75rem; color: var(--text3); margin-top: 0.15rem; }
+
+  /* ── SHARED ── */
+  section { padding: 6rem 2rem; }
+  .wrap { max-width: 960px; margin: 0 auto; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.72rem; font-weight: 600; color: var(--purple2);
+    text-transform: uppercase; letter-spacing: 0.13em; margin-bottom: 0.8rem;
+  }
+  .eyebrow::before {
+    content: ''; display: block; width: 18px; height: 1px; background: var(--purple2);
+  }
+  .sec-title {
+    font-size: clamp(1.7rem, 2.8vw, 2.2rem); font-weight: 800;
+    letter-spacing: -0.03em; margin-bottom: 1rem; line-height: 1.15;
+  }
+
+  /* ── ABOUT ── */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .about-text p { color: var(--text2); margin-bottom: 1.1rem; font-size: 0.97rem; line-height: 1.8; }
+  .about-text strong { color: var(--text); font-weight: 500; }
+  .info-cards { display: flex; flex-direction: column; gap: 0.9rem; }
+  .icard {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--r); padding: 1.1rem 1.3rem;
+    transition: border-color var(--ease), transform var(--ease);
+  }
+  .icard:hover { border-color: var(--border2); transform: translateX(4px); }
+  .icard-label { font-size: 0.72rem; color: var(--text3); margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.07em; }
+  .icard-val { font-weight: 600; font-size: 0.94rem; }
+
+  /* ── SKILLS ── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.2rem; margin-top: 2.5rem;
+  }
+  .sgroup {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--r2); padding: 1.4rem;
+    transition: border-color var(--ease), transform var(--ease);
+  }
+  .sgroup:hover { border-color: var(--border2); transform: translateY(-3px); }
+  .sgroup-title {
+    font-size: 0.72rem; font-weight: 700; color: var(--text3);
+    text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 1rem;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .tag {
+    font-size: 0.78rem; padding: 0.28rem 0.75rem; border-radius: 40px;
+    border: 1px solid var(--border2); color: var(--text2); background: var(--bg2);
+    transition: var(--ease);
+  }
+  .tag:hover { color: var(--text); border-color: var(--purple2); background: rgba(165,147,252,0.07); }
+  .tag.hi { border-color: rgba(124,109,250,0.38); color: var(--purple2); background: rgba(124,109,250,0.08); }
+
+  /* ── PROJECTS ── */
+  .project-list { display: flex; flex-direction: column; gap: 2rem; margin-top: 2.5rem; }
+  .pcard {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--r2); overflow: hidden;
+    transition: border-color var(--ease), transform var(--ease);
+  }
+  .pcard:hover { border-color: var(--border2); transform: translateY(-2px); }
+
+  .pcard-top {
+    padding: 1.8rem 1.8rem 0;
+    display: flex; justify-content: space-between;
+    align-items: flex-start; gap: 1rem; flex-wrap: wrap;
+  }
+  .pmeta { flex: 1; min-width: 0; }
+  .pbadge {
+    display: inline-block; font-size: 0.7rem; font-weight: 600;
+    padding: 0.22rem 0.7rem; border-radius: 40px;
+    text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.7rem;
+  }
+  .pbadge.mern { background: rgba(34,211,238,0.1); color: var(--cyan); border: 1px solid rgba(34,211,238,0.2); }
+  .pbadge.dj   { background: rgba(52,211,153,0.1); color: var(--green); border: 1px solid rgba(52,211,153,0.2); }
+  .ptitle { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
+  .ptagline { color: var(--text2); font-size: 0.9rem; }
+  .plinks { display: flex; gap: 0.6rem; flex-shrink: 0; }
+  .plink {
+    display: flex; align-items: center; gap: 0.35rem;
+    background: var(--card2); border: 1px solid var(--border2);
+    border-radius: 7px; padding: 0.38rem 0.85rem;
+    font-size: 0.78rem; color: var(--text2); text-decoration: none;
+    transition: var(--ease);
+  }
+  .plink:hover { color: var(--text); border-color: var(--purple2); }
+
+  .pcard-body { padding: 1.4rem 1.8rem 1.8rem; }
+  .psub {
+    font-size: 0.7rem; font-weight: 700; color: var(--text3);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin: 1.4rem 0 0.7rem;
+  }
+  .ptext { color: var(--text2); font-size: 0.92rem; line-height: 1.75; }
+
+  .fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  .fitem {
+    display: flex; align-items: flex-start; gap: 0.55rem;
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 9px; padding: 0.75rem 0.95rem;
+    font-size: 0.83rem; color: var(--text2); line-height: 1.5;
+  }
+  .fdot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--purple2); flex-shrink: 0; margin-top: 5px;
+  }
+
+  .arch-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .apill {
+    padding: 0.3rem 0.85rem; border-radius: 40px;
+    font-size: 0.78rem; font-weight: 500; border: 1px solid var(--border2);
+  }
+  .apill.fe { background: rgba(165,147,252,0.1); color: var(--purple2); border-color: rgba(165,147,252,0.22); }
+  .apill.be { background: rgba(34,211,238,0.07); color: var(--cyan);    border-color: rgba(34,211,238,0.18); }
+  .apill.db { background: rgba(52,211,153,0.07); color: var(--green);   border-color: rgba(52,211,153,0.18); }
+  .apill.rt { background: rgba(251,191,36,0.07); color: var(--amber);   border-color: rgba(251,191,36,0.18); }
+
+  .dec-list { display: flex; flex-direction: column; gap: 0.6rem; }
+  .dec-item {
+    background: var(--bg2); border-left: 2px solid var(--purple);
+    border-radius: 0 9px 9px 0; padding: 0.85rem 1rem;
+  }
+  .dec-q { font-size: 0.84rem; color: var(--text2); margin-bottom: 0.25rem; font-weight: 500; }
+  .dec-a { font-size: 0.82rem; color: var(--text); line-height: 1.6; }
+
+  .metrics { display: flex; gap: 0.9rem; flex-wrap: wrap; }
+  .mbox {
+    flex: 1; min-width: 110px; background: var(--bg2);
+    border: 1px solid var(--border); border-radius: var(--r);
+    padding: 0.85rem 1rem; text-align: center;
+  }
+  .mbox .mn { font-size: 1.35rem; font-weight: 800; color: var(--purple2); }
+  .mbox .ml { font-size: 0.72rem; color: var(--text3); margin-top: 0.15rem; }
+
+  .pdiv { border: none; border-top: 1px solid var(--border); margin: 1.3rem 0; }
+
+  /* ── HOW I WORK ── */
+  .hgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; margin-top: 2.5rem; }
+  .hcard {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--r2); padding: 1.6rem;
+    transition: border-color var(--ease), transform var(--ease);
+  }
+  .hcard:hover { border-color: var(--border2); transform: translateY(-3px); }
+  .hicon { font-size: 1.35rem; margin-bottom: 0.9rem; }
+  .htitle { font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; }
+  .htext { color: var(--text2); font-size: 0.85rem; line-height: 1.7; }
+
+  /* ── CERT ── */
+  .cert-card {
+    display: flex; align-items: center; gap: 1.2rem;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--r); padding: 1.2rem 1.5rem;
+    margin-top: 2rem; max-width: 480px;
+    transition: border-color var(--ease);
+  }
+  .cert-card:hover { border-color: var(--border2); }
+  .cert-badge {
+    width: 42px; height: 42px; border-radius: 10px; flex-shrink: 0;
+    background: rgba(124,109,250,0.12); border: 1px solid rgba(124,109,250,0.25);
+    display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+  }
+  .cert-info { flex: 1; }
+  .cert-name { font-weight: 600; font-size: 0.94rem; }
+  .cert-by { font-size: 0.78rem; color: var(--text2); margin-top: 0.15rem; }
+  .cert-link {
+    font-size: 0.76rem; color: var(--purple2); text-decoration: none;
+    border: 1px solid rgba(165,147,252,0.3); border-radius: 6px;
+    padding: 0.28rem 0.7rem; flex-shrink: 0; transition: var(--ease);
+  }
+  .cert-link:hover { background: rgba(165,147,252,0.08); }
+
+  /* ── CONTACT ── */
+  .contact-box {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--r2); padding: 3.5rem 2rem;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .contact-glow {
+    position: absolute; top: -60%; left: 50%; transform: translateX(-50%);
+    width: 500px; height: 300px; pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(124,109,250,0.09) 0%, transparent 70%);
+  }
+  .contact-box h2 { font-size: 1.9rem; font-weight: 800; margin-bottom: 0.8rem; position: relative; }
+  .contact-box p { color: var(--text2); margin-bottom: 2rem; font-size: 0.96rem; position: relative; }
+  .clinks { display: flex; gap: 0.9rem; justify-content: center; flex-wrap: wrap; position: relative; }
+  .clink {
+    display: flex; align-items: center; gap: 0.45rem;
+    background: var(--bg2); border: 1px solid var(--border2);
+    border-radius: 9px; padding: 0.65rem 1.25rem;
+    font-size: 0.88rem; color: var(--text); text-decoration: none;
+    transition: border-color var(--ease), transform var(--ease);
+  }
+  .clink:hover { border-color: var(--purple2); transform: translateY(-2px); }
+  .clink.main { background: var(--purple); border-color: var(--purple); color: #fff; }
+  .clink.main:hover { opacity: 0.84; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border); padding: 1.3rem 2.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 0.78rem; color: var(--text3); flex-wrap: wrap; gap: 0.5rem;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 680px) {
+    nav { padding: 0.9rem 1.2rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.2rem; }
+    .hero { padding: 6.5rem 1.2rem 3rem; }
+    .stats-row { gap: 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .pcard-top { flex-direction: column; }
+    .fgrid { grid-template-columns: 1fr; }
+    .contact-box { padding: 2.5rem 1.2rem; }
+    footer { text-align: center; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#">Pratik<em>.</em></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="toggle-btn" onclick="toggleTheme()" id="themeBtn">☀ Light</button>
+    <a href="#contact" class="hire-btn">Hire Me</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="status-pill">
+      <span class="dot"></span>
+      Open to full-time roles and freelance work
+    </div>
+    <h1>
+      I write code that<br>
+      <span class="grad">solves real problems.</span>
+    </h1>
+    <p class="hero-desc">
+      Full-stack developer who builds complete web apps — from secure login systems
+      and live data updates to clean, fast user interfaces. I care about things that
+      actually work.
+    </p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-fill">See My Work →</a>
+      <a href="https://github.com/hello-world123pratik" target="_blank" class="btn-ghost">GitHub</a>
+    </div>
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-n">2<sup>+</sup></div>
+        <div class="stat-l">Live Projects</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">8<sup>+</sup></div>
+        <div class="stat-l">Technologies</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">7.26<sup>/10</sup></div>
+        <div class="stat-l">CGPA — Pune University</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" style="background: var(--bg2);">
+  <div class="wrap">
+    <span class="eyebrow">About Me</span>
+    <div class="about-grid">
+      <div class="about-text">
+        <h2 class="sec-title">I don't just build demos. I build things that work.</h2>
+        <p>While most students focused on coursework, I was building and shipping real apps.
+          I wanted to understand the full picture — <strong>not just how to write code,
+          but how to build products people can use</strong>.</p>
+        <p>I care about the details that matter to users: fast load times, secure logins,
+          clear error messages, and interfaces that feel easy to use. <strong>I treat
+          software quality as a habit, not an afterthought.</strong></p>
+        <p>I want to join a team where people are proud of what they ship — and where
+          I can keep growing every day.</p>
+      </div>
+      <div class="info-cards">
+        <div class="icard">
+          <div class="icard-label">Location</div>
+          <div class="icard-val" style="color: var(--purple2);">Pune, Maharashtra, India 🇮🇳</div>
+        </div>
+        <div class="icard">
+          <div class="icard-label">Education</div>
+          <div class="icard-val">B.C.S — Savitribai Phule Pune University</div>
+        </div>
+        <div class="icard">
+          <div class="icard-label">Most proud of</div>
+          <div class="icard-val" style="font-weight: 400; font-size: 0.88rem; color: var(--text2); line-height: 1.55;">
+            Writing a smart algorithm that figures out the fewest payments needed to settle group debts.
+          </div>
+        </div>
+        <div class="icard">
+          <div class="icard-label">Currently studying</div>
+          <div class="icard-val" style="color: var(--green);">System Design &amp; Cloud</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrap">
+    <span class="eyebrow">Skills</span>
+    <h2 class="sec-title">Everything from UI to database.</h2>
+    <div class="skills-grid">
+      <div class="sgroup">
+        <div class="sgroup-title">Frontend</div>
+        <div class="tags">
+          <span class="tag hi">React.js</span>
+          <span class="tag hi">Tailwind CSS</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">HTML5 / CSS3</span>
+          <span class="tag">Bootstrap</span>
+          <span class="tag">Chart.js</span>
+        </div>
+      </div>
+      <div class="sgroup">
+        <div class="sgroup-title">Backend</div>
+        <div class="tags">
+          <span class="tag hi">Node.js</span>
+          <span class="tag hi">Express.js</span>
+          <span class="tag hi">Django</span>
+          <span class="tag">REST APIs</span>
+          <span class="tag">JWT Auth</span>
+          <span class="tag">Socket.io</span>
+        </div>
+      </div>
+      <div class="sgroup">
+        <div class="sgroup-title">Databases</div>
+        <div class="tags">
+          <span class="tag hi">MongoDB</span>
+          <span class="tag hi">MySQL</span>
+          <span class="tag">SQL Joins</span>
+          <span class="tag">Indexing</span>
+          <span class="tag">Schema Design</span>
+        </div>
+      </div>
+      <div class="sgroup">
+        <div class="sgroup-title">Data &amp; Analysis</div>
+        <div class="tags">
+          <span class="tag hi">Python</span>
+          <span class="tag">NumPy</span>
+          <span class="tag">Pandas</span>
+          <span class="tag">Matplotlib</span>
+          <span class="tag">Seaborn</span>
+          <span class="tag">MS Excel</span>
+        </div>
+      </div>
+      <div class="sgroup">
+        <div class="sgroup-title">Tools &amp; Deployment</div>
+        <div class="tags">
+          <span class="tag hi">Git / GitHub</span>
+          <span class="tag">Vercel</span>
+          <span class="tag">Render</span>
+          <span class="tag">Postman</span>
+          <span class="tag">VS Code</span>
+          <span class="tag">Jupyter</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" style="background: var(--bg2);">
+  <div class="wrap">
+    <span class="eyebrow">Projects</span>
+    <h2 class="sec-title">Two apps. Both live.</h2>
+    <div class="project-list">
+
+      <!-- PROJECT 1 -->
+      <div class="pcard">
+        <div class="pcard-top">
+          <div class="pmeta">
+            <span class="pbadge mern">MERN Stack</span>
+            <h3 class="ptitle">SplitWise — Group Expense Splitter</h3>
+            <p class="ptagline">Split bills with friends and settle debts with fewer payments.</p>
+          </div>
+          <div class="plinks">
+            <a href="https://expense-splitter-xi-one.vercel.app" target="_blank" class="plink">↗ Live App</a>
+            <a href="https://github.com/hello-world123pratik" target="_blank" class="plink">GitHub</a>
+          </div>
+        </div>
+        <div class="pcard-body">
+
+          <div class="psub">The Problem</div>
+          <p class="ptext">When a group goes on a trip, money gets messy fast. Someone pays for dinner, someone else covers the hotel, and by the end no one knows who owes what. Most apps just record expenses — they don't tell you how to settle them. This app does both, and it calculates the fewest transactions needed to clear all debts.</p>
+
+          <div class="psub">What It Does</div>
+          <div class="fgrid">
+            <div class="fitem"><span class="fdot"></span>Smart algorithm that reduces the number of payments needed to settle all debts</div>
+            <div class="fitem"><span class="fdot"></span>Live updates — when someone adds an expense, everyone sees it right away</div>
+            <div class="fitem"><span class="fdot"></span>Split by equal shares, exact amounts, or percentages</div>
+            <div class="fitem"><span class="fdot"></span>Secure login with tokens — no password stored as plain text</div>
+            <div class="fitem"><span class="fdot"></span>Charts showing monthly spending and spending by category</div>
+            <div class="fitem"><span class="fdot"></span>Works on phone, tablet, and desktop — dark and light mode included</div>
+          </div>
+
+          <div class="psub">Tech Used</div>
+          <div class="arch-row">
+            <span class="apill fe">React.js + Tailwind — screen</span>
+            <span class="apill be">Node.js + Express — server</span>
+            <span class="apill db">MongoDB — storage</span>
+            <span class="apill rt">Socket.io — live updates</span>
+            <span class="apill fe">Chart.js — graphs</span>
+            <span class="apill be">JWT + bcrypt — login security</span>
+          </div>
+
+          <div class="psub">Key Decisions</div>
+          <div class="dec-list">
+            <div class="dec-item">
+              <div class="dec-q">Why use tokens (JWT) instead of regular sessions?</div>
+              <div class="dec-a">Tokens don't need a shared memory between servers. This means the app scales easily and works across multiple deployments without any extra setup.</div>
+            </div>
+            <div class="dec-item">
+              <div class="dec-q">How does the debt algorithm work?</div>
+              <div class="dec-a">Instead of tracking every transaction, I calculate each person's final balance (what they paid minus what they owe). Then I match the person who owes the most with the person owed the most — this keeps the number of payments as small as possible.</div>
+            </div>
+            <div class="dec-item">
+              <div class="dec-q">Why add live updates to a money app?</div>
+              <div class="dec-a">In a group setting, multiple people can add expenses at the same time. Without live updates, you'd see old data and balances would be wrong until you refresh. Real-time sync keeps everyone on the same page.</div>
+            </div>
+          </div>
+
+          <div class="psub">Results</div>
+          <div class="metrics">
+            <div class="mbox"><div class="mn">3x</div><div class="ml">fewer payments to settle</div></div>
+            <div class="mbox"><div class="mn">&lt;200ms</div><div class="ml">live update speed</div></div>
+            <div class="mbox"><div class="mn">100%</div><div class="ml">mobile friendly</div></div>
+          </div>
+
+          <hr class="pdiv">
+          <div class="psub">What I'd Add Next</div>
+          <p class="ptext" style="font-size: 0.87rem;">Direct payment through UPI or Razorpay, automatic spending category detection, push notifications when a new expense is added, and a mobile app version.</p>
+        </div>
+      </div>
+
+      <!-- PROJECT 2 -->
+      <div class="pcard">
+        <div class="pcard-top">
+          <div class="pmeta">
+            <span class="pbadge dj">Django + Python</span>
+            <h3 class="ptitle">JobBoard — Job Portal with Roles</h3>
+            <p class="ptagline">A full job portal for job seekers, employers, and admins — each with their own view.</p>
+          </div>
+          <div class="plinks">
+            <a href="https://dijango-project.onrender.com" target="_blank" class="plink">↗ Live App</a>
+            <a href="https://github.com/hello-world123pratik" target="_blank" class="plink">GitHub</a>
+          </div>
+        </div>
+        <div class="pcard-body">
+
+          <div class="psub">The Problem</div>
+          <p class="ptext">A job platform needs to serve three completely different types of users — job seekers browsing listings, employers posting roles, and admins keeping things clean. Each group needs different screens, different permissions, and different controls. Building all three in one app cleanly is harder than it sounds.</p>
+
+          <div class="psub">What It Does</div>
+          <div class="fgrid">
+            <div class="fitem"><span class="fdot"></span>Three user roles: job seeker, employer, admin — each with their own dashboard</div>
+            <div class="fitem"><span class="fdot"></span>Employers can post jobs, edit them, and see who applied</div>
+            <div class="fitem"><span class="fdot"></span>Jobs only go live after an admin approves them</div>
+            <div class="fitem"><span class="fdot"></span>Users can upload resumes, photos, and company logos</div>
+            <div class="fitem"><span class="fdot"></span>Pages are locked by role — wrong users can't access the wrong areas</div>
+            <div class="fitem"><span class="fdot"></span>Deployed and running live on Render</div>
+          </div>
+
+          <div class="psub">Tech Used</div>
+          <div class="arch-row">
+            <span class="apill fe">Django Templates — screens</span>
+            <span class="apill be">Django ORM — data handling</span>
+            <span class="apill db">SQLite — storage</span>
+            <span class="apill rt">Django Auth — login &amp; roles</span>
+            <span class="apill be">Render — live deployment</span>
+          </div>
+
+          <div class="psub">Key Decisions</div>
+          <div class="dec-list">
+            <div class="dec-item">
+              <div class="dec-q">How is role access enforced?</div>
+              <div class="dec-a">Every page checks the user's role before loading. Trying to access the employer dashboard as a job seeker returns a clear "access denied" — not a crash or an empty page.</div>
+            </div>
+            <div class="dec-item">
+              <div class="dec-q">Why require admin approval before a job goes live?</div>
+              <div class="dec-a">This stops spam and fake listings. It gives the platform a way to maintain quality without building a complex filter system. Simple but effective.</div>
+            </div>
+          </div>
+
+          <div class="psub">Results</div>
+          <div class="metrics">
+            <div class="mbox"><div class="mn">3</div><div class="ml">user roles built</div></div>
+            <div class="mbox"><div class="mn">0</div><div class="ml">access control leaks</div></div>
+            <div class="mbox"><div class="mn">Live</div><div class="ml">deployed on Render</div></div>
+          </div>
+
+          <hr class="pdiv">
+          <div class="psub">What I'd Add Next</div>
+          <p class="ptext" style="font-size: 0.87rem;">Switch to a React frontend with a Django REST API backend, add job search with filters, email alerts when an application status changes, and employer stats like how many people viewed a posting.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW I WORK -->
+<section id="mindset">
+  <div class="wrap">
+    <span class="eyebrow">How I Work</span>
+    <h2 class="sec-title">The way I think about software.</h2>
+    <div class="hgrid">
+      <div class="hcard">
+        <div class="hicon">🚀</div>
+        <div class="htitle">Ship first, improve after</div>
+        <div class="htext">Both my projects are live and accessible to anyone. I believe in getting something real out the door and improving it — not waiting for it to be "perfect" before anyone sees it.</div>
+      </div>
+      <div class="hcard">
+        <div class="hicon">🗺️</div>
+        <div class="htitle">Plan before you code</div>
+        <div class="htext">Before I write a line of code, I sketch out how the data flows, who needs access to what, and what could go wrong. Both the expense algorithm and the job portal role system were designed on paper first.</div>
+      </div>
+      <div class="hcard">
+        <div class="hicon">🔐</div>
+        <div class="htitle">Security from the start</div>
+        <div class="htext">I don't add login security as a last step. Hashed passwords, secure tokens, and protected routes are part of how I build — not something I bolt on at the end.</div>
+      </div>
+      <div class="hcard">
+        <div class="hicon">📈</div>
+        <div class="htitle">Data helps users understand</div>
+        <div class="htext">I added the spending charts to SplitWise because I thought users would want to see where their money was going — not because it was a requirement. Good products give users insight.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATION -->
+<section style="padding-top: 0;">
+  <div class="wrap">
+    <span class="eyebrow">Certification</span>
+    <h2 class="sec-title">Learning doesn't stop at graduation.</h2>
+    <div class="cert-card">
+      <div class="cert-badge">🐍</div>
+      <div class="cert-info">
+        <div class="cert-name">Crash Course on Python</div>
+        <div class="cert-by">Coursera — Authorized by Google</div>
+      </div>
+      <a href="https://coursera.org/verify/76MBKY3QNPQV" target="_blank" class="cert-link">Verify ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="background: var(--bg2);">
+  <div class="wrap">
+    <div class="contact-box">
+      <div class="contact-glow"></div>
+      <h2>Ready to work together?</h2>
+      <p>I'm open to full-time jobs, freelance projects, and interesting ideas.<br>I reply within 24 hours.</p>
+      <div class="clinks">
+        <a href="mailto:pratikshirsath45@gmail.com" class="clink main">✉ pratikshirsath45@gmail.com</a>
+        <a href="https://linkedin.com/in/pratik-shirsath-6524aa284" target="_blank" class="clink">LinkedIn</a>
+        <a href="https://github.com/hello-world123pratik" target="_blank" class="clink">GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Pratik Pramod Shirsath</span>
+  <span>Designed and built by me — not a template.</span>
+</footer>
+
+<script>
+  function toggleTheme() {
+    var body = document.body;
+    var btn = document.getElementById('themeBtn');
+    if (body.hasAttribute('data-light')) {
+      body.removeAttribute('data-light');
+      btn.textContent = '☀ Light';
+    } else {
+      body.setAttribute('data-light', '');
+      btn.textContent = '☾ Dark';
+    }
+  }
+</script>
+</body>
+</html>
